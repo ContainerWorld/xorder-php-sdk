@@ -1,0 +1,42 @@
+{
+    "name": "container-world/xorder",
+    "description": "PHP SDK for Container World's xOrder EDI platform.",
+    "keywords": ["xorder", "container world", "edi"],
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Ryan Stratton",
+            "email": "ryan@craftt.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CW\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.5",
+        "guzzlehttp/guzzle": ">=5.3|~6.0.1|~6.1",
+        "guzzlehttp/psr7": "~1.0",
+        "guzzlehttp/promises": "~1.0"
+    },
+    "require-dev": {
+        "ext-openssl": "*",
+        "ext-pcre": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "phpunit/phpunit": "~4.0"
+    },
+    "suggest": {
+        "ext-curl": "To send requests using cURL"
+    },
+    "scripts": {
+        "test": "vendors/bin/phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
