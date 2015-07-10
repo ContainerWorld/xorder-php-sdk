@@ -16,23 +16,23 @@
         }
     },
     "require": {
-        "php": ">=5.5",
+        "php": ">=5.5.9",
+        "ext-dom": "*",
         "guzzlehttp/guzzle": ">=5.3|~6.0.1|~6.1",
-        "guzzlehttp/psr7": "~1.0",
-        "guzzlehttp/promises": "~1.0"
+        "guzzlehttp/psr7": "~1.0"
     },
     "require-dev": {
-        "ext-openssl": "*",
-        "ext-pcre": "*",
-        "ext-json": "*",
-        "ext-simplexml": "*",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.0",
+        "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
-        "ext-curl": "To send requests using cURL"
+        "ext-curl": "Required to send requests using cURL.",
+        "illuminate/view": "Required to make the examples work."
     },
     "scripts": {
-        "test": "vendors/bin/phpunit"
+        "test": "./vendor/bin/phpunit",
+        "lint": "./vendor/bin/phpcs --colors --standard=./phpcs.xml src/",
+        "lint-fix": "./vendor/bin/phpcbf --standard=./phpcs.xml src/"
     },
     "extra": {
         "branch-alias": {
