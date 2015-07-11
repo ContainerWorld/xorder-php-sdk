@@ -31,6 +31,11 @@ class XOrderValidator {
     public $schema = '/Schema/XOrderSchema.xsd';
 
     /**
+     * @var \XOrder\XOrder
+     */
+    public function $xorder;
+
+    /**
      * Constructor
      *
      * @param XOrder\XOrder $xorder
