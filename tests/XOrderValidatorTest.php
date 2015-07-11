@@ -44,7 +44,7 @@ class XOrderValidatorTest extends PHPUnit_Framework_TestCase {
     {
         $xorder = new XOrder('tests/fixtures/xorder.xml', true);
         $validator = new XOrderValidator($xorder);
-        $schema = $validator->getSchema('./src/schema/XOrderSchema.xsd');
+        $schema = $validator->getSchema('./src/Schema/XOrderSchema.xsd');
 
         $this->assertInternalType('string', $schema);
     }      

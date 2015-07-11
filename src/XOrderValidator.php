@@ -28,7 +28,7 @@ class XOrderValidator {
     /**
      * @var string
      */
-    public $schema = '/schema/XOrderSchema.xsd';
+    public $schema = '/Schema/XOrderSchema.xsd';
 
     /**
      * Constructor
