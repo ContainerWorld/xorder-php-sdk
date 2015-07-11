@@ -39,7 +39,7 @@ class XOrder implements XOrderInterface {
     {
         if ($file) {
             $this->fromFile($xml);
-        } 
+        }
 
         else {
             $this->fromString($xml);

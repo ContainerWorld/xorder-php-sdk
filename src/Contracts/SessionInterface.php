@@ -79,6 +79,6 @@ interface SessionInterface {
      * @param  string $response
      * @return \XOrder\Session
      */
-    public function set($response);    
+    public function set($response);
     
 }

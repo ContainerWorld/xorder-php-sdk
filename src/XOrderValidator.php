@@ -33,7 +33,7 @@ class XOrderValidator {
     /**
      * @var \XOrder\XOrder
      */
-    public function $xorder;
+    public $xorder;
 
     /**
      * Constructor

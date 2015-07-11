@@ -27,21 +27,21 @@ class XOrderValidationException extends Exception {
 
     /**
      * Constructor
-     * 
+     *
      * @param array $errors
      */
-    public function __construct(array $errors) 
-    {   
+    public function __construct(array $errors)
+    {
         parent::__construct($errors[0]->message);
         $this->errors = $errors;
     }
 
-    /** 
+    /**
      * Get the array of xml validation errors.
      *
      * @return array
      */
-    public final function getErrors()
+    final public function getErrors()
     {
         return $this->errors;
     }
