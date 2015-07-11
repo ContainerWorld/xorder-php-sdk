@@ -104,7 +104,7 @@ class Client implements ClientInterface {
      */
     public function getLogoutMessage()
     {
-        list($username, $password, $account) = $this->credentials()->toArray();
+        list($username, , $account) = $this->credentials()->toArray();
         $xml = '<xLogout><userid>%s</userid><sessionId>%s</sessionId><bcldbNum>%s</bcldbNum></xLogout>';
         return sprintf($xml, $username, $this->session()->getId(), $account);
     }
@@ -159,7 +159,7 @@ class Client implements ClientInterface {
      * Login to the Container World LoginServlet.
      *
      * @param  \XOrder\Credentials [$credentials]
-     * @return self
+     * @return \XOrder\Client
      */
     public function login(Credentials $credentials = null)
     {
@@ -227,7 +227,7 @@ class Client implements ClientInterface {
      *
      * @param  \XOrder\XOrder $xorder
      * @param  boolean $validate
-     * @return self
+     * @return \XOrder\Client
      */
     public function send(XOrder $xorder, $validate = false)
     {
@@ -291,7 +291,7 @@ class Client implements ClientInterface {
      * the passed order.
      *
      * @param  \XOrder\XOrder $xorder
-     * @return \XOrder\Resposne
+     * @return \XOrder\Client
      */
     public function validate(XOrder $xorder)
     {

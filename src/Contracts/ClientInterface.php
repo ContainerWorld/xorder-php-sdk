@@ -24,14 +24,14 @@ interface ClientInterface {
      * Login to the Container World LoginServlet.
      *
      * @param  \XOrder\Credentials|null $credentials
-     * @return this
+     * @return \XOrder\Client
      */
     public function login(Credentials $credentials = null);
 
     /**
      * End the session with the container world xOrder servlet.
      *
-     * @return this
+     * @return \XOrder\Response
      */
     public function logout();
 
@@ -39,15 +39,15 @@ interface ClientInterface {
      * Send an order to the xOrder servlet.
      *
      * @param  \XOrder\XOrder $xorder
-     * @return this
+     * @return \XOrder\Response
      */
     public function send(XOrder $xorder);
 
     /**
      * Send an order to the xOrder servlet to be
      * validated.
-     * @param  XOrder $order
-     * @return this
+     * @param  \XOrder\XOrder $order
+     * @return \XOrder\Response
      */
     public function validate(XOrder $order);
     
