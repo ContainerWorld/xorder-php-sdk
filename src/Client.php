@@ -227,7 +227,7 @@ class Client implements ClientInterface {
      *
      * @param  \XOrder\XOrder $xorder
      * @param  boolean $validate
-     * @return \XOrder\Client
+     * @return \XOrder\Response
      */
     public function send(XOrder $xorder, $validate = false)
     {
@@ -291,7 +291,7 @@ class Client implements ClientInterface {
      * the passed order.
      *
      * @param  \XOrder\XOrder $xorder
-     * @return \XOrder\Client
+     * @return \XOrder\Response
      */
     public function validate(XOrder $xorder)
     {
