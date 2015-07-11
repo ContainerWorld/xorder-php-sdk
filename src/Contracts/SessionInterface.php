@@ -77,7 +77,7 @@ interface SessionInterface {
      * Create the session from a response.
      *
      * @param  string $response
-     * @return this
+     * @return \XOrder\Session
      */
     public function set($response);    
     

@@ -127,7 +127,7 @@ class Session implements SessionInterface {
      *
      * @param  string $response
      * @throws \XOrder\InvalidCredentialsException
-     * @return this
+     * @return \XOrder\Session
      */
     public function set($response)
     {

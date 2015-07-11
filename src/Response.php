@@ -38,7 +38,7 @@ class Response implements ResponseInterface {
     /**
      * Property overloader.
      *
-     * @param  string $value
+     * @param  string $property
      * @throws \ErrorException
      * @return mixed
      */
