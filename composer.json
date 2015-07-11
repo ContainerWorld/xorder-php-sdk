@@ -22,12 +22,15 @@
         "guzzlehttp/psr7": "~1.0"
     },
     "require-dev": {
+        "illuminate/view": "^5.1",
+        "mockery/mockery": "^0.9.4",
         "phpunit/phpunit": "~4.0",
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
         "ext-curl": "Required to send requests using cURL.",
-        "illuminate/view": "Required to make the examples work."
+        "illuminate/view": "Required to make the examples work.",
+        "monolog/monolog": "PSR-3 compatable logger."
     },
     "scripts": {
         "test": "./vendor/bin/phpunit",
