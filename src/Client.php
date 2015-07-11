@@ -48,7 +48,7 @@ class Client implements ClientInterface {
     public $http;
 
     /**
-     * @var \XOrder\SessionInterface
+     * @var \XOrder\Contracts\SessionInterface
      */
     public $session;
 
