@@ -1,5 +1,10 @@
 filter:
-    paths: [src/*]
-    excluded_paths: [tests/*, examples/*, coverage/*]
+    paths: 
+        - src/*
+    excluded_paths:
+        - coverage/*
+        - examples/* 
+        - tests/*
+        - vendor/*
 checks:
   php: true
