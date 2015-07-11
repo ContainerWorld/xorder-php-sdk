@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs = "http://www.w3.org/2001/XMLSchema" elementFormDefault = "qualified">
+    <!--Defintion of simple types -->
+    <xs:simpleType name = "StdDateType">
+        <xs:annotation>
+            <xs:documentation>Restricted xs:date that accepts only positive Gregorian calendar dates in the format YYYY-MM-DD (dashes included) without time zone indicator.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base = "xs:date">
+            <xs:pattern value = "[1-9][0-9]{3}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name = "StdCurrencyType">
+        <xs:annotation>
+            <xs:documentation>Accepts dollar amounts with 2 decimal places.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base = "xs:decimal">
+            <xs:fractionDigits value = "2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name = "YesNoFlag">
+        <xs:restriction base = "xs:string">
+            <xs:enumeration value = "Y"/>
+            <xs:enumeration value = "N"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name = "XOrder">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref = "Validation"/>
+                <xs:element ref = "PdsPurchaseOrders"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name = "Validation">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref = "bcldbNum"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name = "bcldbNum">
+        <xs:simpleType>
+            <xs:restriction base = "xs:integer">
+                <xs:totalDigits value = "11"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "PdsPurchaseOrders">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs = "unbounded" ref = "PdsPurchaseOrder"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name = "PdsPurchaseOrder">
+        <xs:complexType>
+            <xs:all>
+                <xs:element minOccurs = "0"
+                    name = "orderBolReqOverrideFlag" type = "YesNoFlag"/>
+                <xs:element ref = "supplierPoRef"/>
+                <xs:element ref = "orderDate"/>
+                <xs:element ref = "deliveryDate"/>
+                <xs:element ref = "paymentMethod"/>
+                <xs:element ref = "warehouse"/>
+                <xs:element minOccurs = "0" ref = "poComments"/>
+                <xs:element minOccurs = "0" ref = "doNotShip"/>
+                <xs:element minOccurs = "0" ref = "privateLabel"/>
+                <xs:element minOccurs = "0" ref = "deliveryTo"/>
+                <xs:element ref = "customerNum"/>
+                <xs:element minOccurs = "0" ref = "shipToLocation"/>
+                <xs:element minOccurs = "0" ref = "customerOrderRef"/>
+                <xs:element minOccurs = "0" ref = "custDiscountPercent"/>
+			    
+				<!--  New Elements to support Sales Taxes excluded from product price -->
+                <xs:element ref = "taxGstPercent"/>
+                <xs:element ref = "taxGstAmount"/>
+                <xs:element minOccurs = "0" ref = "taxPstPercent"/>
+                <xs:element minOccurs = "0" ref = "taxPstAmount"/>
+
+                <xs:element minOccurs = "0" ref = "orderType"/>
+                <xs:element ref = "Products"/>
+				<!--  Make subtotal and litterDeposit  required-->
+                <!--  xs:element minOccurs = "0" ref = "subTotal"/ -->
+				<xs:element ref = "subTotal"/>
+                <!-- xs:element minOccurs = "0" ref = "litterDeposit"/ -->
+				<xs:element ref = "litterDeposit"/>
+                <xs:element ref = "totAmount"/>
+                <xs:element ref = "totCases"/>
+                <xs:element minOccurs = "0" ref = "Adjustments"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name = "supplierPoRef">
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:maxLength value = "12"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "orderDate" type = "StdDateType"/>
+    <xs:element name = "deliveryDate" type = "StdDateType"/>
+    <xs:element name = "paymentMethod">
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:enumeration value = "CC-AMEX"/>
+                <xs:enumeration value = "CC-MC"/>
+                <xs:enumeration value = "CC-VISA"/>
+                <xs:enumeration value = "CCO"/>
+                <xs:enumeration value = "CHQ"/>
+                <xs:enumeration value = "CHQ-MAIL"/>
+                <xs:enumeration value = "COD"/>
+                <xs:enumeration value = "CSH"/>
+                <xs:enumeration value = "DDB"/>
+                <xs:enumeration value = "DDP"/>
+                <xs:enumeration value = "EF"/>
+                <xs:enumeration value = "NC"/>
+                <xs:enumeration value = "NET_30"/>
+                <xs:enumeration value = "PTF"/>
+                <xs:enumeration value = "ST"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "warehouse">
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:enumeration value = "CLIV"/>
+                <xs:enumeration value = "CLK2"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "poComments">
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:minLength value = "0"/>
+                <xs:maxLength value = "500"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "doNotShip" type = "YesNoFlag"/>
+    <xs:element name = "privateLabel" type = "YesNoFlag"/>
+    <xs:element name = "deliveryTo" type = "YesNoFlag"/>
+    <xs:element name = "customerNum">
+        <xs:simpleType>
+            <xs:restriction base = "xs:integer">
+                <xs:totalDigits value = "6"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "shipToLocation">
+        <xs:simpleType>
+            <xs:restriction base = "xs:integer">
+                <xs:totalDigits value = "6"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "customerOrderRef">
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:maxLength value = "12"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "custDiscountPercent">
+        <xs:simpleType>
+            <xs:restriction base = "xs:decimal">
+                <xs:fractionDigits value = "4"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "taxGstPercent">
+        <xs:simpleType>
+            <xs:restriction base = "xs:decimal">
+                <xs:fractionDigits value = "2"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "taxPstPercent">
+        <xs:simpleType>
+            <xs:restriction base = "xs:decimal">
+                <xs:fractionDigits value = "2"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "orderType">
+        <xs:annotation>
+            <xs:documentation>Order Types: D=Delivery, U=Customer Pickup, R=Return Pickup and Delivery and P=Return Pickup.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:enumeration value = "D"/>
+                <xs:enumeration value = "U"/>
+                <xs:enumeration value = "R"/>
+                <xs:enumeration value = "P"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "Products">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs = "unbounded" ref = "Product"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name = "Product">
+        <xs:complexType>
+            <xs:all>
+                <xs:element minOccurs = "0" ref = "cspc"/>
+                <xs:element minOccurs = "0" ref = "pidNum"/>
+                <xs:element minOccurs = "0" ref = "vintage"/>
+                <xs:element minOccurs = "0" ref = "actionType"/>
+                <xs:element ref = "quantity"/>
+                <xs:element ref = "custPrice"/>
+                <xs:element minOccurs = "0" ref = "custDiscountPrice"/>
+                <xs:element minOccurs = "0" ref = "custLitterDeposit"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name = "cspc">
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:maxLength value = "6"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "pidNum">
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:maxLength value = "12"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "vintage">
+        <xs:simpleType>
+            <xs:restriction base = "xs:integer">
+                <xs:totalDigits value = "4"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "actionType">
+        <xs:simpleType>
+            <xs:restriction base = "xs:string">
+                <xs:enumeration value = "P"/>
+                <xs:enumeration value = "R"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "quantity">
+        <xs:simpleType>
+            <xs:restriction base = "xs:integer">
+                <xs:totalDigits value = "11"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "custPrice" type = "StdCurrencyType"/>
+    <xs:element name = "custDiscountPrice" type = "StdCurrencyType"/>
+    <xs:element name = "custLitterDeposit" type = "StdCurrencyType"/>
+    <xs:element name = "subTotal" type = "StdCurrencyType"/>
+    <!-- New Elements to suppport Sales Taxes excluded from product price-->
+    <xs:element name = "taxGstAmount" type = "StdCurrencyType"/>
+    <xs:element name = "taxPstAmount" type = "StdCurrencyType"/>
+	<xs:element name = "litterDeposit" type = "StdCurrencyType"/>
+    <xs:element name = "totAmount" type = "StdCurrencyType"/>
+    <xs:element name = "totCases">
+        <xs:simpleType>
+            <xs:restriction base = "xs:integer">
+                <xs:totalDigits value = "11"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name = "Adjustments">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs = "0" ref = "KegAdjustment"/>
+                <xs:element
+                    minOccurs = "0"
+                    maxOccurs = "2"
+                    ref = "SpeedyMailerAdjustment"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name = "KegAdjustment">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name = "kegQuantity" type = "xs:integer"/>
+                <xs:element name = "kegAdjustmentAmount" type = "StdCurrencyType"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name = "SpeedyMailerAdjustment">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name = "refNumber" type = "xs:integer"/>
+                <xs:element name = "speedyMailerAmount" type = "StdCurrencyType"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
