@@ -31,7 +31,7 @@ interface ClientInterface {
     /**
      * End the session with the container world xOrder servlet.
      *
-     * @return \XOrder\Response
+     * @return \XOrder\Response|boolean
      */
     public function logout();
 
