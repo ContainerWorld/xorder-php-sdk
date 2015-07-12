@@ -62,7 +62,7 @@ class XOrder implements XOrderInterface {
      *
      * @param  string $xml
      * @throws \XOrder\Exceptions\FileDoesNotExistException
-     * @return this
+     * @return \XOrder\XOrder
      */
     public function fromFile($xml)
     {
@@ -79,7 +79,7 @@ class XOrder implements XOrderInterface {
      * load the xml order from string.
      *
      * @param  string $xml
-     * @return this
+     * @return \XOrder\XOrder
      */
     public function fromString($xml)
     {

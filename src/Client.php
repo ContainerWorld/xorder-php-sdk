@@ -255,7 +255,7 @@ class Client implements ClientInterface {
      * Get the session object.  If one doesn't exist
      * we'll create one.
      *
-     * @return \XOrder\SessionInterface
+     * @return \XOrder\Contracts\SessionInterface
      */
     public function session()
     {
