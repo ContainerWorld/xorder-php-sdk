@@ -18,6 +18,9 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use XOrder\Contracts\ClientInterface;
 use XOrder\Contracts\SessionInterface;
 use XOrder\Credentials;
@@ -30,7 +33,7 @@ use XOrder\Session;
 /**
  * Client
  */
-class Client implements ClientInterface {
+class Client implements ClientInterface, LoggerAwareInterface {
 
     /**
      * @var \Psr\Http\Message\UriInterface
@@ -46,6 +49,11 @@ class Client implements ClientInterface {
      * @var \GuzzleHttp\ClientInterface
      */
     public $http;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    public $logger;
 
     /**
      * @var \XOrder\Contracts\SessionInterface
@@ -153,6 +161,22 @@ class Client implements ClientInterface {
         }
 
         return $this->http;
+    }
+
+    /**
+     * Log message.
+     *
+     * @param  string $level
+     * @param  string $message
+     * @return null
+     */
+    public function log($level, $message)
+    {
+        if ($this->logger instanceof LoggerInterface) {
+            $this->logger->$level($message);
+        }
+        
+        return null;
     }
 
     /**
@@ -274,6 +298,17 @@ class Client implements ClientInterface {
     public function setBaseUri(UriInterface $uri)
     {
         $this->baseUri = $uri;
+    }
+
+    /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     /**

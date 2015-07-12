@@ -9,6 +9,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Mockery as M;
 use PHPUnit_Framework_TestCase;
+use Psr\Log\LogLevel;
 use XOrder\Client;
 use XOrder\Credentials;
 use XOrder\Contracts\SessionInterface;
@@ -213,7 +214,24 @@ class ClientTest extends PHPUnit_Framework_TestCase {
         $client->setBaseUri($uri);
 
         $this->assertInstanceOf('Psr\Http\Message\UriInterface', $client->baseUri);
-    }     
+    }
+
+    /**
+     * @test
+     * @covers XOrder\Client::setLogger
+     * @covers XOrder\Client::log
+     */
+    public function set_a_valid_logger_and_send_message()
+    {
+        $mock = M::mock('Psr\\Log\\LoggerInterface');
+        $mock->shouldReceive('debug')->once()->andReturn(null);
+
+        $client = new Client;
+        $client->setLogger($mock);
+        $client->log(LogLevel::DEBUG, 'Logging');
+
+        $this->assertInstanceOf('Psr\\Log\\LoggerInterface', $client->logger);
+    }
 
     /**
      * @test
