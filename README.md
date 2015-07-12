@@ -22,6 +22,18 @@ $client->login($credentials);
 $response = $client->send($xorder);
 ```
 
+## Order Validation
+
+The xOrder PHP SDK can also be used to validate your order xml against the [xOrder schema](https://github.com/craftt/xorder-php-sdk/blob/master/src/Schema/XOrderSchema.xsd) declaration.
+
+```php
+$xorder = new XOrder\XOrder('xorder.xml', true);
+
+$validator = new XOrder\XOrderValidator($xorder);
+
+$isValid = $validator->validate();
+```
+
 ## Testing
 
 The xOrder PHP SDK has a [PHPUnit](https://phpunit.de/) test suite. To run the tests, run the following command from the project folder:
