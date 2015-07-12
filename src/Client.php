@@ -60,7 +60,7 @@ class Client implements ClientInterface {
     public function __construct(Credentials $credentials = null)
     {
         $this->credentials = $credentials;
-        $this->baseUri = new Uri('http://styx.containerworld.ca/');
+        $this->baseUri = new Uri('http://www.xorder.ca/');
     }
 
     /**
