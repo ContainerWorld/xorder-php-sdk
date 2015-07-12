@@ -87,6 +87,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function credentials()
     {
         if (!$this->hasCredentials()) {
+            $this->log(LogLevel::ERROR, 'Credentials: No valid credentials have been set');
             throw new InvalidCredentialsException('Please set your credentials!');
         }
 
@@ -224,6 +225,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
         $response = $this->http()->send($request);
 
         if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
+            $this->log(LogLevel::ERROR, 'Response: Could not connect to xOrder');
             throw new XOrderConnectionException('Could not connect to xOrder.');
         }
 
@@ -269,6 +271,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
         );
 
         if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
+            $this->log(LogLevel::ERROR, 'Response: Could not connect to xOrder');
             throw new \Exception('Could not connect to xOrder.');
         }
 
@@ -284,6 +287,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function session()
     {
         if (!$this->hasSession()) {
+            $this->log(LogLevel::ERROR, 'Session: You must login before sending xorders');
             throw new InvalidSessionException('You must login before sending xorders.');
         }
 
@@ -298,6 +302,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function setBaseUri(UriInterface $uri)
     {
         $this->baseUri = $uri;
+        $this->log(LogLevel::INFO, "Base URI: $uri");
     }
 
     /**
