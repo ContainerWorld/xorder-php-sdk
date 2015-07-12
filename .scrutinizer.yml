@@ -8,3 +8,7 @@ filter:
         - vendor/*
 checks:
   php: true
+tools:
+    external_code_coverage:
+        timeout: 600
+        runs: 3
