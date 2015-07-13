@@ -14,7 +14,7 @@ Examples of how the xOrder PHP SDK can be used are located in the examples direc
 
 ```php
 $xorder = new XOrder\XOrder('xorder.xml', true);
-$credentials = new XOrder\Credentials('uesrname', 'password', 'account');
+$credentials = new XOrder\Credentials('username', 'password', 'account');
 
 $client = new XOrder\Client;
 $client->login($credentials);
