@@ -17,6 +17,7 @@
     },
     "require": {
         "php": ">=5.5.9",
+        "ext-curl": "*",
         "ext-dom": "*",
         "guzzlehttp/guzzle": ">=5.3|~6.0.1|~6.1",
         "guzzlehttp/psr7": "~1.0",
@@ -24,13 +25,11 @@
         "psr/http-message": "^1.0"
     },
     "require-dev": {
-        "illuminate/view": "^5.1",
         "mockery/mockery": "^0.9.4",
         "phpunit/phpunit": "~4.0",
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
-        "ext-curl": "Required to send requests using cURL.",
         "monolog/monolog": "PSR-3 compatable logger."
     },
     "scripts": {
