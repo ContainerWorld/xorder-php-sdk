@@ -3,7 +3,7 @@
 /**
  * XOrder Connection Exception.
  *
- * @package     container-world/xorder
+ * @package     craftt/xorder-php
  * @author      Ryan Stratton <ryan@craftt.com>
  * @copyright   Copyright (c) Ryan Stratton
  * @license     http://www.apache.org/licenses/LICENSE-2.0
