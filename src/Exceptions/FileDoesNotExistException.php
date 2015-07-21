@@ -3,7 +3,7 @@
 /**
  * xOrder File Does Not Exist Exception.
  *
- * @package     craftt/xorder-php
+ * @package     container-world/xorder
  * @author      Ryan Stratton <ryan@craftt.com>
  * @copyright   Copyright (c) Ryan Stratton
  * @license     http://www.apache.org/licenses/LICENSE-2.0

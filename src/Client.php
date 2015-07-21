@@ -3,7 +3,7 @@
 /**
  * xOrder Client.
  *
- * @package     craftt/xorder-php
+ * @package     container-world/xorder
  * @author      Ryan Stratton <ryan@craftt.com>
  * @copyright   Copyright (c) Ryan Stratton
  * @license     https://github.com/craftt/xorder-php-sdk/blob/master/LICENSE.md Apache 2.0
@@ -18,23 +18,19 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerAwareInterface;
 use XOrder\Contracts\ClientInterface;
 use XOrder\Contracts\SessionInterface;
 use XOrder\Credentials;
 use XOrder\Exceptions\InvalidCredentialsException;
 use XOrder\Exceptions\InvalidSessionException;
 use XOrder\Exceptions\XOrderConnectionException;
-use XOrder\LoggerAware;
 use XOrder\Response;
 use XOrder\Session;
 
 /**
  * Client
  */
-class Client implements ClientInterface, LoggerAwareInterface {
-
-    use LoggerAware;
+class Client implements ClientInterface {
 
     /**
      * @var \Psr\Http\Message\UriInterface
@@ -83,7 +79,6 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function credentials()
     {
         if (!$this->hasCredentials()) {
-            $this->logger()->error('XOrder\Client: No valid credentials have been set');
             throw new InvalidCredentialsException('Please set your credentials!');
         }
 
@@ -179,7 +174,6 @@ class Client implements ClientInterface, LoggerAwareInterface {
         $response = $this->http()->send($request);
 
         if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
-            $this->logger()->error('XOrder\Client::login - Could not connect to xOrder');
             throw new XOrderConnectionException('Could not connect to xOrder.');
         }
 
@@ -206,7 +200,6 @@ class Client implements ClientInterface, LoggerAwareInterface {
         $response = $this->http()->send($request);
 
         if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
-            $this->logger()->error('XOrder\Client::logout - Could not connect to xOrder');
             throw new XOrderConnectionException('Could not connect to xOrder.');
         }
 
@@ -252,7 +245,6 @@ class Client implements ClientInterface, LoggerAwareInterface {
         );
 
         if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
-            $this->logger()->error('XOrder\Client::send - Could not connect to xOrder');
             throw new \Exception('Could not connect to xOrder.');
         }
 
@@ -268,7 +260,6 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function session()
     {
         if (!$this->hasSession()) {
-            $this->logger()->error('XOrder\Client::session - You must login before sending xOrders');
             throw new InvalidSessionException('You must login before sending xorders.');
         }
 
@@ -283,7 +274,6 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function setBaseUri(UriInterface $uri)
     {
         $this->baseUri = $uri;
-        $this->logger()->info("XOrder\Client::setBaseUri - $uri");
     }
 
     /**
