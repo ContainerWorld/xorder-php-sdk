@@ -51,6 +51,20 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @test
+     * @covers XOrder\Client::hasLogger
+     * @covers XOrder\Client::logger
+     * @covers XOrder\Client::setLogger
+     */
+    public function get_a_valid_logger_and_send_message()
+    {
+        $client = new Client;
+        $client->logger()->debug('Logging');
+
+        $this->assertInstanceOf('Psr\\Log\\LoggerInterface', $client->logger);
+    }    
+
+    /**
+     * @test
      * @covers XOrder\Client::credentials
      */
     public function get_valid_credentials()
@@ -218,8 +232,9 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @test
+     * @covers XOrder\Client::hasLogger
+     * @covers XOrder\Client::logger
      * @covers XOrder\Client::setLogger
-     * @covers XOrder\Client::log
      */
     public function set_a_valid_logger_and_send_message()
     {
@@ -228,7 +243,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
         $client = new Client;
         $client->setLogger($mock);
-        $client->log(LogLevel::DEBUG, 'Logging');
+        $client->logger()->debug('Logging');
 
         $this->assertInstanceOf('Psr\\Log\\LoggerInterface', $client->logger);
     }

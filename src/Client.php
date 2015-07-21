@@ -19,14 +19,13 @@ use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use XOrder\Contracts\ClientInterface;
 use XOrder\Contracts\SessionInterface;
 use XOrder\Credentials;
 use XOrder\Exceptions\InvalidCredentialsException;
 use XOrder\Exceptions\InvalidSessionException;
 use XOrder\Exceptions\XOrderConnectionException;
+use XOrder\LoggerAware;
 use XOrder\Response;
 use XOrder\Session;
 
@@ -34,6 +33,8 @@ use XOrder\Session;
  * Client
  */
 class Client implements ClientInterface, LoggerAwareInterface {
+
+    use LoggerAware;
 
     /**
      * @var \Psr\Http\Message\UriInterface
@@ -49,11 +50,6 @@ class Client implements ClientInterface, LoggerAwareInterface {
      * @var \GuzzleHttp\ClientInterface
      */
     public $http;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    public $logger;
 
     /**
      * @var \XOrder\Contracts\SessionInterface
@@ -87,7 +83,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function credentials()
     {
         if (!$this->hasCredentials()) {
-            $this->log(LogLevel::ERROR, 'Credentials: No valid credentials have been set');
+            $this->logger()->error('XOrder\Client: No valid credentials have been set');
             throw new InvalidCredentialsException('Please set your credentials!');
         }
 
@@ -165,22 +161,6 @@ class Client implements ClientInterface, LoggerAwareInterface {
     }
 
     /**
-     * Log message.
-     *
-     * @param  string $level
-     * @param  string $message
-     * @return null
-     */
-    public function log($level, $message)
-    {
-        if ($this->logger instanceof LoggerInterface) {
-            $this->logger->$level($message);
-        }
-        
-        return null;
-    }
-
-    /**
      * Login to the Container World LoginServlet.
      *
      * @param  \XOrder\Credentials [$credentials]
@@ -199,6 +179,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
         $response = $this->http()->send($request);
 
         if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
+            $this->logger()->error('XOrder\Client::login - Could not connect to xOrder');
             throw new XOrderConnectionException('Could not connect to xOrder.');
         }
 
@@ -225,7 +206,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
         $response = $this->http()->send($request);
 
         if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
-            $this->log(LogLevel::ERROR, 'Response: Could not connect to xOrder');
+            $this->logger()->error('XOrder\Client::logout - Could not connect to xOrder');
             throw new XOrderConnectionException('Could not connect to xOrder.');
         }
 
@@ -271,7 +252,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
         );
 
         if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
-            $this->log(LogLevel::ERROR, 'Response: Could not connect to xOrder');
+            $this->logger()->error('XOrder\Client::send - Could not connect to xOrder');
             throw new \Exception('Could not connect to xOrder.');
         }
 
@@ -287,7 +268,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function session()
     {
         if (!$this->hasSession()) {
-            $this->log(LogLevel::ERROR, 'Session: You must login before sending xorders');
+            $this->logger()->error('XOrder\Client::session - You must login before sending xOrders');
             throw new InvalidSessionException('You must login before sending xorders.');
         }
 
@@ -302,18 +283,7 @@ class Client implements ClientInterface, LoggerAwareInterface {
     public function setBaseUri(UriInterface $uri)
     {
         $this->baseUri = $uri;
-        $this->log(LogLevel::INFO, "Base URI: $uri");
-    }
-
-    /**
-     * Sets a logger instance on the object
-     *
-     * @param LoggerInterface $logger
-     * @return null
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+        $this->logger()->info("XOrder\Client::setBaseUri - $uri");
     }
 
     /**
