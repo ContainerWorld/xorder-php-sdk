@@ -1,5 +1,5 @@
 {
-    "name": "container-world/xorder",
+    "name": "craftt/xorder-php",
     "description": "PHP SDK for Container World's xOrder EDI platform.",
     "keywords": ["xorder", "container world", "edi"],
     "type": "library",
@@ -31,7 +31,6 @@
     },
     "suggest": {
         "ext-curl": "Required to send requests using cURL.",
-        "illuminate/view": "Required to make the examples work.",
         "monolog/monolog": "PSR-3 compatable logger."
     },
     "scripts": {
