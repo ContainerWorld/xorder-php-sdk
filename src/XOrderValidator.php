@@ -3,7 +3,7 @@
 /**
  * xOrder Validator.
  *
- * @package     container-world/xorder
+ * @package     craftt/xorder-sdk
  * @author      Ryan Stratton <ryan@craftt.com>
  * @copyright   Copyright (c) Ryan Stratton
  * @license     https://github.com/craftt/xorder-php-sdk/blob/master/LICENSE.md Apache 2.0
@@ -18,7 +18,8 @@ use XOrder\Exceptions\XOrderValidationException;
 /**
  * XOrder
  */
-class XOrderValidator {
+class XOrderValidator
+{
 
     /**
      * @var array
@@ -88,5 +89,4 @@ class XOrderValidator {
 
         return $valid;
     }
-
 }

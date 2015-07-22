@@ -3,7 +3,7 @@
 /**
  * xOrder File Does Not Exist Exception.
  *
- * @package     container-world/xorder
+ * @package     craftt/xorder-sdk
  * @author      Ryan Stratton <ryan@craftt.com>
  * @copyright   Copyright (c) Ryan Stratton
  * @license     http://www.apache.org/licenses/LICENSE-2.0
@@ -15,6 +15,7 @@ namespace XOrder\Exceptions;
 /**
  * XOrder Fiel Does Not Exist Exception
  */
-class FileDoesNotExistException extends \Exception {
+class FileDoesNotExistException extends \Exception
+{
 
 }

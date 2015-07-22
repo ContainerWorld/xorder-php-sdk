@@ -1,5 +1,5 @@
 {
-    "name": "container-world/xorder",
+    "name": "craftt/xorder-sdk",
     "description": "PHP SDK for Container World's xOrder EDI platform.",
     "keywords": ["xorder", "container world", "edi"],
     "type": "library",

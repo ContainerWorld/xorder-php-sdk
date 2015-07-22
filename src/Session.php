@@ -3,7 +3,7 @@
 /**
  * xOrder Session.
  *
- * @package     container-world/xorder
+ * @package     craftt/xorder-sdk
  * @author      Ryan Stratton <ryan@craftt.com>
  * @copyright   Copyright (c) Ryan Stratton
  * @license     https://github.com/craftt/xorder-php-sdk/blob/master/LICENSE.md Apache 2.0
@@ -19,7 +19,8 @@ use XOrder\Exceptions\InvalidCredentialsException;
 /**
  * Session
  */
-class Session implements SessionInterface {
+class Session implements SessionInterface
+{
 
     /**
      * @var \SimpleXMLElement
@@ -134,5 +135,4 @@ class Session implements SessionInterface {
         $this->data = new SimpleXMLElement($response);
         return $this;
     }
-
 }

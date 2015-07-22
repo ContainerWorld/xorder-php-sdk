@@ -3,7 +3,7 @@
 /**
  * xOrder Client Interface.
  *
- * @package     container-world/xorder
+ * @package     craftt/xorder-sdk
  * @author      Ryan Stratton <ryan@craftt.com>
  * @copyright   Copyright (c) Ryan Stratton
  * @license     https://github.com/craftt/xorder-php-sdk/blob/master/LICENSE.md Apache 2.0
@@ -18,7 +18,8 @@ use XOrder\xOrder;
 /**
  * Client Interface
  */
-interface ClientInterface {
+interface ClientInterface
+{
 
     /**
      * Login to the Container World LoginServlet.
@@ -50,5 +51,4 @@ interface ClientInterface {
      * @return \XOrder\Response
      */
     public function validate(XOrder $order);
-    
 }

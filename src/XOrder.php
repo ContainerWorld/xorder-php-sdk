@@ -3,7 +3,7 @@
 /**
  * xOrder.
  *
- * @package     container-world/xorder
+ * @package     craftt/xorder-sdk
  * @author      Ryan Stratton <ryan@craftt.com>
  * @copyright   Copyright (c) Ryan Stratton
  * @license     https://github.com/craftt/xorder-php-sdk/blob/master/LICENSE.md Apache 2.0
@@ -18,7 +18,8 @@ use XOrder\Exceptions\FileDoesNotExistException;
 /**
  * XOrder
  */
-class XOrder implements XOrderInterface {
+class XOrder implements XOrderInterface
+{
 
     /**
      * @var \SimpleXMLElement
@@ -39,9 +40,7 @@ class XOrder implements XOrderInterface {
     {
         if ($file) {
             $this->fromFile($xml);
-        }
-
-        else {
+        } else {
             $this->fromString($xml);
         }
     }
@@ -98,5 +97,4 @@ class XOrder implements XOrderInterface {
     {
         return $this->getXML();
     }
-
 }

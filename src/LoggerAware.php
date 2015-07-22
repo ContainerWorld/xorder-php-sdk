@@ -15,7 +15,8 @@ namespace XOrder;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-trait LoggerAware {
+trait LoggerAware
+{
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -24,7 +25,7 @@ trait LoggerAware {
 
     /**
      * Check if the instance has a valid logger.
-     * 
+     *
      * @return boolean
      */
     public function hasLogger()
@@ -34,7 +35,7 @@ trait LoggerAware {
 
     /**
      * Get the logger instance.
-     * 
+     *
      * @return \Psr\Log\LoggerInterface
      */
     public function logger()
@@ -56,5 +57,4 @@ trait LoggerAware {
     {
         $this->logger = $logger;
     }
-
 }
