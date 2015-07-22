@@ -3,8 +3,6 @@
 namespace XOrder\Tests;
 
 use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Mockery as M;
@@ -13,6 +11,7 @@ use Psr\Log\LogLevel;
 use XOrder\Client;
 use XOrder\Credentials;
 use XOrder\Contracts\SessionInterface;
+use XOrder\XOrder;
 
 /**
  * @covers XOrder\Client
@@ -125,51 +124,174 @@ class ClientTest extends PHPUnit_Framework_TestCase {
      */
     public function get_logout_message_body_xml()
     {
+
+        $xml = M::mock('xml', function($mock) {
+            $mock->shouldReceive('getContents')
+                ->andReturn('<?xml version="1.0" encoding="UTF-8"?><xorder></xorder>');
+        });
+
+        $response = M::mock('GuzzleHttp\Psr7\Response');
+        $response->shouldReceive('getStatusCode')->andReturn(200);
+        $response->shouldReceive('getBody')->andReturn($xml);
+        $response->shouldIgnoreMissing();
+
         $session = M::mock('XOrder\\Contracts\\SessionInterface');
         $session->shouldReceive('getId')->andReturn(1);
         $session->shouldReceive('isValid')->andReturn(true);
         $session->shouldIgnoreMissing();
 
+        $http = M::mock('GuzzleHttp\Client');
+        $http->shouldReceive('send')->andReturn($response);
+
         $credentials = new Credentials('username', 'password', 'account');
         $client = new Client($credentials);
+        $client->setHttpClient($http);
         $client->session = $session;
         $expected = '<xLogout><userid>username</userid><sessionId>1</sessionId><bcldbNum>account</bcldbNum></xLogout>';
 
         $xml = $client->getLogoutMessage();
 
         $this->assertEquals($expected, $xml);        
-    }    
+    }
+
+    /**
+     * @test
+     * @covers XOrder\Client::login
+     */
+    public function login_successfully_to_xorder_servlet()
+    {
+        $xml = M::mock('xml', function($mock) {
+            $mock->shouldReceive('getContents')
+                ->andReturn('<?xml version="1.0" encoding="UTF-8"?><xorder></xorder>');
+        });
+
+        $response = M::mock('GuzzleHttp\Psr7\Response');
+        $response->shouldReceive('getStatusCode')->andReturn(200);
+        $response->shouldReceive('getBody')->andReturn($xml);
+        $response->shouldIgnoreMissing();
+
+        $http = M::mock('GuzzleHttp\Client');
+        $http->shouldReceive('send')->andReturn($response);
+
+        $credentials = new Credentials('username', 'password', 'account');
+        $client = new Client($credentials);
+        $client->setHttpClient($http);
+        $expected = $client->login();
+
+        $this->assertInstanceOf('XOrder\Contracts\ClientInterface', $expected);
+    }
+
+    /**
+     * @test
+     * @covers XOrder\Client::login
+     */
+    public function login_successfully_to_xorder_servlet_by_passing_credentials_to_login()
+    {
+        $xml = M::mock('xml', function($mock) {
+            $mock->shouldReceive('getContents')
+                ->andReturn('<?xml version="1.0" encoding="UTF-8"?><xorder></xorder>');
+        });
+
+        $response = M::mock('GuzzleHttp\Psr7\Response');
+        $response->shouldReceive('getStatusCode')->andReturn(200);
+        $response->shouldReceive('getBody')->andReturn($xml);
+        $response->shouldIgnoreMissing();
+
+        $http = M::mock('GuzzleHttp\Client');
+        $http->shouldReceive('send')->andReturn($response);
+
+        $credentials = new Credentials('username', 'password', 'account');
+        $client = new Client();
+        $client->setHttpClient($http);
+        $expected = $client->login($credentials);
+
+        $this->assertInstanceOf('XOrder\Contracts\ClientInterface', $expected);
+    }     
+
+    /**
+     * @test
+     * @covers XOrder\Client::login
+     * @expectedException XOrder\Exceptions\XOrderConnectionException
+     */
+    public function login_unsuccessfully_to_xorder_servlet()
+    {
+        $response = M::mock('GuzzleHttp\Psr7\Response');
+        $response->shouldReceive('getStatusCode')->andReturn(404);
+        $response->shouldIgnoreMissing();
+
+        $http = M::mock('GuzzleHttp\Client');
+        $http->shouldReceive('send')->andReturn($response);
+
+        $credentials = new Credentials('username', 'password', 'account');
+        $client = new Client($credentials);
+        $client->setHttpClient($http);
+        $client->login();
+    }     
 
     /**
      * @test
      * @covers XOrder\Client::getLogoutMessage
      * @covers XOrder\Client::logout
      */
-    public function logout_from_xorder_servlet()
+    public function logout_successfully_from_xorder_servlet()
     {
-        // $mock = new MockHandler([
-        //     new Response(200, [], '<response></response>')
-        // ]);
+        $xml = M::mock('xml', function($mock) {
+            $mock->shouldReceive('getContents')
+                ->andReturn('<?xml version="1.0" encoding="UTF-8"?><xorder></xorder>');
+        });
 
-        // $handler = HandlerStack::create($mock);
-        // $http = new HttpClient(['handler' => $handler]);
+        $response = M::mock('GuzzleHttp\Psr7\Response');
+        $response->shouldReceive('getStatusCode')->andReturn(200);
+        $response->shouldReceive('getBody')->andReturn($xml);
+        $response->shouldIgnoreMissing();
+        
+        $session = M::mock('XOrder\\Contracts\\SessionInterface');
+        $session->shouldReceive('getId')->andReturn(1);
+        $session->shouldReceive('isValid')->andReturn(true);
+        $session->shouldIgnoreMissing();
 
-        // $session = M::mock('XOrder\Contracts\SessionInterface');
-        // $session->shouldReceive('getId')->andReturn(1);
-        // $session->shouldReceive('isValid')->andReturn(true);
+        $http = M::mock('GuzzleHttp\Client');
+        $http->shouldReceive('send')->andReturn($response);
 
-        // $credentials = new Credentials('username', 'password', 'account');
-        // $client = new Client($credentials);
-        // $client->setHttpClient($http);
-        // $client->session = $session;
+        $credentials = new Credentials('username', 'password', 'account');
+        $client = new Client($credentials);
+        $client->setHttpClient($http);
+        $client->session = $session;
+        $expected = $client->logout();
 
-        // $expected = '<xLogout><userid>username</userid><sessionId>1</sessionId><bcldbNum>account</bcldbNum></xLogout>';
+        $this->assertInstanceOf('XOrder\Contracts\ResponseInterface', $expected);        
+    }
 
-        // $message = $client->getLogoutMessage();
-        // $result = $client->logout();
+    /**
+     * @test
+     * @covers XOrder\Client::logout
+     * @expectedException XOrder\Exceptions\XOrderConnectionException
+     */
+    public function logout_unsuccessfully_from_xorder_servlet()
+    {
+        $xml = M::mock('xml', function($mock) {
+            $mock->shouldReceive('getContents')
+                ->andReturn('<?xml version="1.0" encoding="UTF-8"?><xorder></xorder>');
+        });
 
-        // $this->assertEquals($expected, $message);
-        // $this->assertInstanceOf('XOrder\Contracts\ResponseInterface', $result);        
+        $response = M::mock('GuzzleHttp\Psr7\Response');
+        $response->shouldReceive('getStatusCode')->andReturn(500);
+        $response->shouldReceive('getBody')->andReturn($xml);
+        $response->shouldIgnoreMissing();
+        
+        $session = M::mock('XOrder\\Contracts\\SessionInterface');
+        $session->shouldReceive('getId')->andReturn(1);
+        $session->shouldReceive('isValid')->andReturn(true);
+        $session->shouldIgnoreMissing();
+
+        $http = M::mock('GuzzleHttp\Client');
+        $http->shouldReceive('send')->andReturn($response);
+
+        $credentials = new Credentials('username', 'password', 'account');
+        $client = new Client($credentials);
+        $client->setHttpClient($http);
+        $client->session = $session;
+        $client->logout();      
     }
 
     /**
@@ -216,6 +338,79 @@ class ClientTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($method, $request->getMethod());
         $this->assertEquals($body, $request->getBody());
     }
+
+    /**
+     * @test
+     * @covers XOrder\Client::send
+     * @covers XOrder\Client::validate
+     */
+    public function send_xorder_to_xorder_servlet_successfully()
+    {
+        $xml = M::mock('xml', function($mock) {
+            $mock->shouldReceive('getContents')
+                ->andReturn('<?xml version="1.0" encoding="UTF-8"?><xorder></xorder>');
+        });
+
+        $response = M::mock('GuzzleHttp\Psr7\Response');
+        $response->shouldReceive('getStatusCode')->andReturn(200);
+        $response->shouldReceive('getBody')->andReturn($xml);
+        $response->shouldIgnoreMissing();
+        
+        $session = M::mock('XOrder\\Contracts\\SessionInterface');
+        $session->shouldReceive('getId')->andReturn(1);
+        $session->shouldReceive('isValid')->andReturn(true);
+        $session->shouldIgnoreMissing();
+
+        $http = M::mock('GuzzleHttp\Client');
+        $http->shouldReceive('send')->andReturn($response);
+
+        $xorder = new XOrder('tests/fixtures/xorder.xml', true);
+
+        $credentials = new Credentials('username', 'password', 'account');
+        $client = new Client($credentials);
+        $client->setHttpClient($http);
+        $client->session = $session;
+        
+        $expected = $client->validate($xorder);
+
+        $this->assertInstanceOf('XOrder\Contracts\ResponseInterface', $expected);          
+    }
+
+    /**
+     * @test
+     * @covers XOrder\Client::send
+     * @covers XOrder\Client::validate
+     * @expectedException XOrder\Exceptions\XOrderConnectionException
+     */
+    public function send_xorder_to_xorder_servlet_unsuccessfully()
+    {
+        $xml = M::mock('xml', function($mock) {
+            $mock->shouldReceive('getContents')
+                ->andReturn('<?xml version="1.0" encoding="UTF-8"?><xorder></xorder>');
+        });
+
+        $response = M::mock('GuzzleHttp\Psr7\Response');
+        $response->shouldReceive('getStatusCode')->andReturn(500);
+        $response->shouldReceive('getBody')->andReturn($xml);
+        $response->shouldIgnoreMissing();
+        
+        $session = M::mock('XOrder\\Contracts\\SessionInterface');
+        $session->shouldReceive('getId')->andReturn(1);
+        $session->shouldReceive('isValid')->andReturn(true);
+        $session->shouldIgnoreMissing();
+
+        $http = M::mock('GuzzleHttp\Client');
+        $http->shouldReceive('send')->andReturn($response);
+
+        $xorder = new XOrder('tests/fixtures/xorder.xml', true);
+
+        $credentials = new Credentials('username', 'password', 'account');
+        $client = new Client($credentials);
+        $client->setHttpClient($http);
+        $client->session = $session;
+        
+        $client->validate($xorder);
+    }    
 
     /**
      * @test
