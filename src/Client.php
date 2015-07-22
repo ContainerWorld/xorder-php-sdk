@@ -84,7 +84,7 @@ class Client implements ClientInterface, LoggerAwareInterface
     public function credentials()
     {
         if (!$this->hasCredentials()) {
-            $this->logger()->error('XOrder\Client: No valid credentials have been set');
+            $this->logger()->error('XOrder\Client::credentials - No valid credentials have been set');
             throw new InvalidCredentialsException('Please set your credentials!');
         }
 
@@ -179,13 +179,14 @@ class Client implements ClientInterface, LoggerAwareInterface
 
         $response = $this->http()->send($request);
 
-        if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
+        if (!$this->responseOK($response)) {
             $this->logger()->error('XOrder\Client::login - Could not connect to xOrder');
             throw new XOrderConnectionException('Could not connect to xOrder.');
         }
 
         $this->session = new Session($response->getBody()->getContents());
-        
+        $this->logger()->info('XOrder\Client::login - Successfully logged into xOrder Servlet');
+
         return $this;
     }
 
@@ -206,12 +207,13 @@ class Client implements ClientInterface, LoggerAwareInterface
 
         $response = $this->http()->send($request);
 
-        if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
+        if (!$this->responseOK($response)) {
             $this->logger()->error('XOrder\Client::logout - Could not connect to xOrder');
             throw new XOrderConnectionException('Could not connect to xOrder.');
         }
 
         $this->session()->destroy();
+        $this->logger()->info('XOrder\Client::logout - Successfully logged out of xOrder Servlet');
 
         return new Response($response->getBody()->getContents());
     }
@@ -228,6 +230,17 @@ class Client implements ClientInterface, LoggerAwareInterface
     public function makeRequest($method, $uri, $headers, $body)
     {
         return new Request($method, $uri, $headers, $body);
+    }
+
+    /**
+     * Check if the HTTP request returns a valid response.
+     *
+     * @param  \Psr\Http\Message\ResponseInterface $response
+     * @return boolean
+     */
+    public function responseOK(ResponseInterface $response)
+    {
+        return $response->getStatusCode() === 200;
     }
 
     /**
@@ -252,11 +265,12 @@ class Client implements ClientInterface, LoggerAwareInterface
             ], $xorder->getXML())
         );
 
-        if ($response->getStatusCode() !== 200 || !$response instanceof ResponseInterface) {
+        if (!$this->responseOK($response)) {
             $this->logger()->error('XOrder\Client::send - Could not connect to xOrder');
             throw new \Exception('Could not connect to xOrder.');
         }
 
+        $this->logger()->info('XOrder\Client::send - xOrder sent successfully to xOrder Servlet');
         return new Response($response->getBody()->getContents());
     }
 
@@ -284,7 +298,7 @@ class Client implements ClientInterface, LoggerAwareInterface
     public function setBaseUri(UriInterface $uri)
     {
         $this->baseUri = $uri;
-        $this->logger()->info("XOrder\Client::setBaseUri - $uri");
+        $this->logger()->info("XOrder\Client::setBaseUri - Base URI Set to $uri");
     }
 
     /**
@@ -295,6 +309,7 @@ class Client implements ClientInterface, LoggerAwareInterface
     public function setHttpClient(HttpClientInterface $client)
     {
         $this->http = $client;
+        $this->logger()->info('XOrder\Client::setHttpClient - HTTP Client sucessfully set');
     }
 
     /**
